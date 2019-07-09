@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Facebook Clone</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.5/paper-core.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+    <div class="content">
+        <h2>Sign Up</h2>
+        <form id="form-signup" method="POST" action="/user/register">
+            <div class="form-element form-stack">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" type="email" name="username">
+            </div>
+            <div class="form-element form-stack">
+                <label for="firstname-signup" class="form-label">First Name</label>
+                <input id="firstname-signup" type="text" name="firstname">
+            </div>
+            <div class="form-element form-stack">
+                <label for="lastname-signup" class="form-label">Last Name</label>
+                <input id="lastname-signup" type="text" name="lastname">
+            </div>
+            <div class="form-element form-stack">
+                <label for="password-signup" class="form-label">Password</label>
+                <input id="password-signup" type="password" name="password">
+            </div>
+            <div class="form-element form-submit">
+                <button id="signUp" class="signup" type="submit" name="signup">Sign up</button>
+                <button id="goLeft" class="signup off">Log In</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
