@@ -8,12 +8,16 @@ const LocalStrategy = require("passport-local");
 const flash = require('flash');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const session = require('express-session');
+const helmet = require('helmet');
+const request = require('request');
 //////////////////////////////////////////
 const routes = require('./routes/index');
 const users = require('./routes/users');
 ///////////// App Config ////////////////
 const app = express();
-require('dotenv').config()
+require('dotenv').config();
+app.use(helmet());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,11 +30,21 @@ mongoose.connect('mongodb://localhost:27017/MovieApp', { useNewUrlParser: true }
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 /////////// Passport Config /////////////
+app.use(session({
+    secret: "memem",
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+///////// Flash Config ///////////
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 /////////// Use Routes /////////////////
 app.use('/', routes);
 app.use('/user', users);
@@ -56,15 +70,8 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-///////// Flash Config ///////////
-app.use((req, res, next) => {
-    res.locals.user = req.user;
-    res.locals.login = req.isAuthenticated();
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    next();
-});
+
 //////// Sever Listener ///////////
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('Connected')
 })

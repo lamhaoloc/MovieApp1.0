@@ -10,10 +10,6 @@ function createUser(newUser, password, req, res) {
             res.redirect('/')
         } else {
             passport.authenticate('local')(req, res, () => {
-                req.flash(
-                    'success',
-                    'Success! You are registered and logged in!'
-                );
                 res.redirect('/')
             })
         }
@@ -48,6 +44,10 @@ router.route('/register')
             });
             return createUser(newUser, req.body.password, req, res);
         }
-        return console.log('err')
     })
+router.route('/logout')
+    .get((req, res) => {
+        req.logOut();
+        res.redirect('/')
+    });
 module.exports = router;

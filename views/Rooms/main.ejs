@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title><%=title%></title>
+</head>
+
+<body>
+    <% include ../Components/Navbar %>
+    <div class="container">
+        <div class="jumbotron ">
+            <h1>Please choose your room</h1>
+            <% if(currentUser){ %>
+            <a href="/room/new" class='btn btn-success'>Create a room</a>
+            <% } %>
+        </div>
+        <!-- The rooms -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card" style="width: 16rem;">
+                    <img src="https://i.ytimg.com/vi/KYM8sKDmqh0/default.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+<% include ../Components/Footer %>

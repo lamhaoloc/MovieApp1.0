@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        body {
+            font: 14px sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .click:hover {
+            background-color: #EF9B9E;
+        }
+
+        .hidden-box {
+            background-color: #fff;
+            border-radius: 5px;
+
+            width: auto;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+        }
+    </style>
+    <title><%=title%></title>
+</head>
+
+<body>
+    <% include ../Components/Navbar %>
+    <div class="container">
+        <form method="POST" action="/room/new">
+            <div>
+                <label for="room-title" class="form-label">Room Title</label>
+                <input id="room-title" type="text" name="title" placeholder="Room Title...">
+            </div>
+            <div>
+                <label for="room-content" class="form-label">Room Content</label>
+                <input id="room-content" type="text" name="content">
+            </div>
+            <div>
+                <label for="room-video" class="form-label">Room Video</label>
+                <a id="rooom-video" href="#" class="click">Click Here</a>
+                <div class="hidden-box">
+                    <input id="search-query" type="text">
+                    <a id="video-search" class="btn btn-success">Search</a>
+                    <div class="result-box">
+                        <h1>Hhahaha</h1>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-element form-submit">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+    <script>
+
+        $('.hidden-box').hide();
+        $('.result-box').hide();
+
+        $('.click').on('click', function (event) {
+            event.preventDefault();
+            $(this).next('.hidden-box').slideToggle('fast');
+        });
+        function Search(query) {
+            return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${query}&key=AIzaSyCCY6Iit2lMLDRP84oVMDDPIOjgpv1fMOk`).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                return data.items
+            }).catch(function () {
+                return 'Fuck up'
+            });
+        }
+        const searchQuery = $('#search-query').val();
+        $('#video-search').on('click', async function (event) {
+            const searchResult = await Search(searchQuery)
+            event.preventDefault()
+
+            $(this).next('.result-box').slideToggle('fast');
+            searchResult.map(el => {
+                $('.result-box').append(`<p>${el.snippet.title}</p>`)
+            })
+
+        })
+    </script>
+
+</body>
+
+</html>
