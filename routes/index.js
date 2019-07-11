@@ -14,8 +14,11 @@ router.route('/room/new')
     .get((req, res) => {
         res.render('./Rooms/new', { title: 'New Room' })
     })
+    .post((req, res) => {
+        res.render('./Rooms/confirmNewRoom', { room: req.body, title: req.body.title })
+    })
 router.route('/room/new/video')
     .post((req, res) => {
-        console.log(req.body.searchQuery)
+        res.send('Got it!!!')
     })
 module.exports = router;

@@ -38,24 +38,20 @@
 
 <body>
     <% include ../Components/Navbar %>
-    <div class="container">
+    <div class="container border">
         <form method="POST" action="/room/new">
             <div>
-                <label for="room-title" class="form-label">Room Title</label>
-                <input id="room-title" type="text" name="title" placeholder="Room Title...">
-            </div>
-            <div>
-                <label for="room-content" class="form-label">Room Content</label>
-                <input id="room-content" type="text" name="content">
-            </div>
-            <div>
                 <label for="room-video" class="form-label">Room Video</label>
-                <a id="rooom-video" href="#" class="click">Click Here</a>
+                <input id="room-video" type="text">
+                <input id="room-video1" type="text" name="thumbnail">
+                <input id="room-content" type="text" name="content">
+                <input id="room-title" type="text" name="title">
+                <a href="#" class="click">Click Here</a>
                 <div class="hidden-box">
                     <input id="search-query" type="text">
                     <a id="video-search" class="btn btn-success">Search</a>
-                    <div class="result-box">
-                        <h1>Hhahaha</h1>
+                    <div class="result-box row">
+                        <!-- This is result space-->
                     </div>
                 </div>
 
@@ -74,11 +70,14 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
     <script>
-
         $('.hidden-box').hide();
         $('.result-box').hide();
+        $('#room-video1').hide();
+        $('#room-content').hide();
+        $('#room-title').hide();
 
-        $('.click').on('click', function (event) {
+
+        const hiddenboxController = $('.click').on('click', function (event) {
             event.preventDefault();
             $(this).next('.hidden-box').slideToggle('fast');
         });
@@ -91,19 +90,32 @@
                 return 'Fuck up'
             });
         }
-        const searchQuery = $('#search-query').val();
-        $('#video-search').on('click', async function (event) {
-            const searchResult = await Search(searchQuery)
-            event.preventDefault()
 
+
+        $('#video-search').on('click', async function (event) {
+            const searchQuery = $('input#search-query').val();
+            const searchResult = await Search(searchQuery);
+            event.preventDefault()
             $(this).next('.result-box').slideToggle('fast');
             searchResult.map(el => {
-                $('.result-box').append(`<p>${el.snippet.title}</p>`)
+                const video = `<div class="card mb-3" style="max-width: 540px;"><div class="row no-gutters"><div class="col-md-4"><img src="${el.snippet.thumbnails.high.url}" class="card-img" alt="..."></div><div class="col-md-8"><div class="card-body"><h5 class="card-title">${el.snippet.title}</h5><p class="card-text"><small class="text-muted">Public At ${el.snippet.publishedAt.split('T')[0]}</small></p><a href="#" class="btn btn-success">Get This video</a></div></div></div></div>`
+                $('.result-box').append(video)
             })
-
+            $('a').click(function (event) {
+                const title = $(event.target.parentElement.parentElement)
+                const imgSRC = title.parent()[0].firstChild.firstChild.src
+                searchResult.map(el => {
+                    if (el.snippet.thumbnails.high.url === imgSRC) {
+                        $('#room-video').val(el.snippet.title)
+                        $('#room-video1').val(el.snippet.thumbnails.high.url)
+                        $('#room-content').val(el.snippet.description)
+                        $('#room-title').val(el.snippet.title)
+                    }
+                })
+                $('.hidden-box').slideToggle('fast');
+            });
         })
     </script>
-
 </body>
 
 </html>
