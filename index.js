@@ -10,12 +10,14 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const session = require('express-session');
 const helmet = require('helmet');
-const request = require('request');
+
 //////////////////////////////////////////
 const routes = require('./routes/index');
 const users = require('./routes/users');
 ///////////// App Config ////////////////
-const app = express();
+var app = express()
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 require('dotenv').config();
 app.use(helmet());
 app.use(logger('dev'));
@@ -29,6 +31,12 @@ mongoose.connect('mongodb://localhost:27017/MovieApp', { useNewUrlParser: true }
 //////////// View Engine Setup ////////////
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+/////////// SocketIo Config /////////////
+io.on('connection', function (socket) {
+    socket.on('chat message', function (msg) {
+        io.emit('chat message', msg);
+    });
+});
 /////////// Passport Config /////////////
 app.use(session({
     secret: "memem",
@@ -72,6 +80,6 @@ app.use(function (err, req, res, next) {
 });
 
 //////// Sever Listener ///////////
-app.listen(process.env.PORT || 3000, () => {
+http.listen(process.env.PORT || 3000, () => {
     console.log('Connected')
 })

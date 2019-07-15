@@ -46,6 +46,7 @@
                 <input id="room-video1" type="text" name="thumbnail">
                 <input id="room-content" type="text" name="content">
                 <input id="room-title" type="text" name="title">
+                <input id="room-videoId" type="text" name="videoId">
                 <a href="#" class="click">Click Here</a>
                 <div class="hidden-box">
                     <input id="search-query" type="text">
@@ -75,6 +76,7 @@
         $('#room-video1').hide();
         $('#room-content').hide();
         $('#room-title').hide();
+        $('#room-videoId').hide();
 
 
         const hiddenboxController = $('.click').on('click', function (event) {
@@ -110,6 +112,7 @@
                         $('#room-video1').val(el.snippet.thumbnails.high.url)
                         $('#room-content').val(el.snippet.description)
                         $('#room-title').val(el.snippet.title)
+                        $('#room-videoId').val(el.id.videoId)
                     }
                 })
                 $('.hidden-box').slideToggle('fast');

@@ -1,4 +1,4 @@
-vconst mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 let RoomSchema = new mongoose.Schema({
     title: String,
@@ -11,7 +11,8 @@ let RoomSchema = new mongoose.Schema({
         username: String
     },
     thumbnail: String,
-    content: String
+    content: String,
+    videoId: String
 });
 
 

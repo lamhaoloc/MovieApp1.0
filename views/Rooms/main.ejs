@@ -9,7 +9,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <title><%=title%></title>
 </head>
 
@@ -19,24 +18,46 @@
         <div class="jumbotron ">
             <h1>Please choose your room</h1>
             <% if(currentUser){ %>
+            <% console.log(currentUser) %>
             <a href="/room/new" class='btn btn-success'>Create a room</a>
             <% } %>
         </div>
-        <!-- The rooms -->
         <div class="row">
+            <% if(noMatch !== null) { %>
+            <div class="col-md-12">
+                <h4><%= noMatch %></h4>
+            </div>
+            <%} %>
+            <% rooms.forEach(room => { %>
             <div class="col-md-3">
                 <div class="card" style="width: 16rem;">
-                    <img src="https://i.ytimg.com/vi/KYM8sKDmqh0/default.jpg" class="card-img-top" alt="...">
+                    <img src="<%=room.thumbnail%>" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="card-title"><%=room.title%></h5>
+                        <p class="card-text"><%=room.content%></p>
+                        <a href="/home/<%=room._id%>" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>
-
-
+            <%}) %>
+            <!-- The rooms -->
         </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+            </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+            </script>
+        <script>
+            function haha(selector, maxLength) {
+                return $(selector).toArray()[0].innerText.substr(0, maxLength) + '...'
+            }
+            $('p.card-text').toArray().forEach(el => {
+                return el.innerText = haha('p.card-text', 80)
+            })
+        </script>
+</body>
 
-<% include ../Components/Footer %>
+</html>
