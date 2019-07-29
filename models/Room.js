@@ -8,11 +8,21 @@ let RoomSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
-        username: String
+        username: String,
+        lastName: String,
+        profile: String
     },
     thumbnail: String,
     content: String,
-    videoId: String
+    videoId: String,
+    likes: Number,
+    dislikes: Number,
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
 });
 
 

@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark pb-3">
-    <a class="navbar-brand" href="/">Movie-App</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary pb-3">
+    <a class="navbar-brand" href="/"><i style="color: white" class="fas fa-film fa-2x"></i>Movie-App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,9 +9,6 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/home">Home</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Link</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0 mr-5">
@@ -27,7 +24,7 @@
             </li>
             <% }else{ %>
             <li class="nav-item active">
-                <h2 id="userName"><%=currentUser.lastName%></h2>
+                <a class="nav-link" href="/user/profile" id="userName"><%=currentUser.lastName%></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/user/logout">Logout</a>

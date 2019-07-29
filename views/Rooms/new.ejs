@@ -9,59 +9,85 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <style>
-        body {
-            font: 14px sans-serif;
-            margin: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .click:hover {
-            background-color: #EF9B9E;
-        }
-
-        .hidden-box {
-            background-color: #fff;
-            border-radius: 5px;
-
-            width: auto;
-            margin-bottom: 10px;
-            padding: 10px 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/room/new.css">
     <title><%=title%></title>
 </head>
 
 <body>
     <% include ../Components/Navbar %>
-    <div class="container border">
-        <form method="POST" action="/room/new">
-            <div>
-                <label for="room-video" class="form-label">Room Video</label>
-                <input id="room-video" type="text">
-                <input id="room-video1" type="text" name="thumbnail">
-                <input id="room-content" type="text" name="content">
-                <input id="room-title" type="text" name="title">
-                <input id="room-videoId" type="text" name="videoId">
-                <a href="#" class="click">Click Here</a>
-                <div class="hidden-box">
-                    <input id="search-query" type="text">
+    <div class="content">
+        <div class="container mt-5">
+            <form method="POST" action="/room/new">
+                <div style="text-align: center" class="center">
+                    <h1 style="text-align: center">Pick Your Room's Video</h1>
+                    <input style="margin: auto;display: inline;" class="input-group-text  researcher" type="text">
                     <a id="video-search" class="btn btn-success">Search</a>
-                    <div class="result-box row">
-                        <!-- This is result space-->
+                    <div style="margin-left: 5px" class="result-box row mt-5">
+
+                    </div>
+                    <div class="hidden-box">
+                        <h1 style="text-align: center">Room's Video</h1>
+                        <input id="room-video" style="margin: auto;display: inline;" class="input-group-text"
+                            type="text">
+                        <input id="room-video1" type="text" name="thumbnail">
+                        <input id="room-content" type="text" name="content">
+                        <input id="room-title" type="text" name="title">
+                        <input id="room-videoId" type="text" name="videoId">
+                        <div class="form-element form-submit">
+                            <button class="btn btn-info mt-2" type="submit">Submit</button>
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="form-element form-submit">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
+
+
+    <footer id="myFooter" class="mt-5">
+        <div class="container" style="margin-bottom: -40px">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="logo"><a href="#"> LOGO </a></h2>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2016 Copyright Text </p>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -79,12 +105,10 @@
         $('#room-videoId').hide();
 
 
-        const hiddenboxController = $('.click').on('click', function (event) {
-            event.preventDefault();
-            $(this).next('.hidden-box').slideToggle('fast');
-        });
+
         function Search(query) {
-            return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${query}&key=AIzaSyCCY6Iit2lMLDRP84oVMDDPIOjgpv1fMOk`).then(function (response) {
+            console.log(query)
+            return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=6&q=${query}&key=AIzaSyCCY6Iit2lMLDRP84oVMDDPIOjgpv1fMOk`).then(function (response) {
                 return response.json();
             }).then(function (data) {
                 return data.items
@@ -95,15 +119,15 @@
 
 
         $('#video-search').on('click', async function (event) {
-            const searchQuery = $('input#search-query').val();
+            const searchQuery = $('input.input-group-text.researcher').val();
             const searchResult = await Search(searchQuery);
             event.preventDefault()
             $(this).next('.result-box').slideToggle('fast');
             searchResult.map(el => {
-                const video = `<div class="card mb-3" style="max-width: 540px;"><div class="row no-gutters"><div class="col-md-4"><img src="${el.snippet.thumbnails.high.url}" class="card-img" alt="..."></div><div class="col-md-8"><div class="card-body"><h5 class="card-title">${el.snippet.title}</h5><p class="card-text"><small class="text-muted">Public At ${el.snippet.publishedAt.split('T')[0]}</small></p><a href="#" class="btn btn-success">Get This video</a></div></div></div></div>`
+                const video = `<div class="card mb-3 mt-1 col-md-6" style="max-width: 540px;"><div class="row no-gutters"><div class="col-md-4"><img src="${el.snippet.thumbnails.high.url}" class="card-img" alt="..."></div><div class="col-md-8"><div class="card-body"><h5 class="card-title">${el.snippet.title}</h5><p class="card-text"><small class="text-muted">Public At ${el.snippet.publishedAt.split('T')[0]}</small></p><a href="#" class="btn btn-success">Get This video</a></div></div></div></div>`
                 $('.result-box').append(video)
             })
-            $('a').click(function (event) {
+            $('a.btn.btn-success').click(function (event) {
                 const title = $(event.target.parentElement.parentElement)
                 const imgSRC = title.parent()[0].firstChild.firstChild.src
                 searchResult.map(el => {
@@ -116,6 +140,7 @@
                     }
                 })
                 $('.hidden-box').slideToggle('fast');
+                $('.result-box').slideToggle('fast');
             });
         })
     </script>

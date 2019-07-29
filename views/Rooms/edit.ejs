@@ -10,32 +10,32 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/c531526e8d.js"></script>
-    <title><%=title%></title>
+    <title>Edit Page</title>
 </head>
 
 <body>
     <% include ../Components/Navbar %>
     <div class="container">
-        <form method="POST" action="/room/new/video/confirmed">
+        <form action="/home/<%= room._id %>/edit?_method=PUT" method="POST">
             <div>
                 <img src="<%=room.thumbnail%>">
             </div>
-            <div>
-                <div class="show-title"><%=room.title %><span><a href="#" id="change-title"> change</a></span></div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="room[title]" value="<%= room.title %>">
             </div>
-            <div>
-                <div class="show-content"><%=room.content%><span><a href="#" id="change-content"> change</a></span>
-                </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="room[content]" value="<%= room.content%>">
             </div>
-            <div class="hidden-box" hidden>
-                <input id="title" name="title" value="<%=room.title %>">
-                <input name="thumbnail" value="<%=room.thumbnail%>">
-                <input id="content" name="content" value="<%=room.content%>">
-                <input name="videoId" value="<%=room.videoId%>">
-            </div>
-            <a class="btn btn-danger" href="/room/new">Back</a>
-            <button class="btn btn-success">Save</button>
+            <button class="btn btn-success">Update</button>
         </form>
+        <a class="btn btn-danger" href="/home/<%= room._id%>">Back</a>
+    </div>
+    <div class="hidden-box" hidden>
+        <input id="title" name="title" value="<%=room.title %>">
+        <input name="thumbnail" value="<%=room.thumbnail%>">
+        <input id="content" name="content" value="<%=room.content%>">
+        <input name="videoId" value="<%=room.videoId%>">
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -46,15 +46,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
-    <script>
-
-        $('a#change-title').on('click', function () {
-            $('div.show-title').replaceWith($('input#title'))
-        })
-        $('a#change-content').on('click', function () {
-            $('div.show-content').replaceWith($('input#content'))
-        })
-    </script>
 </body>
 
 </html>

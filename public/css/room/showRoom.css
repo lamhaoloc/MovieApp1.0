@@ -1,7 +1,7 @@
 .chat-icon {
     position: fixed;
-    right: 30px;
-    bottom: 30px;
+    right: 20px;;
+    bottom: 20px;;
 }
 
 #center-text {
@@ -39,7 +39,7 @@
     display: none;
     background: #efefef;
     position: fixed;
-    right: 30px;
+    right: 20px;;
     bottom: 115px;
     width: 350px;
     max-width: 85vw;
@@ -189,7 +189,7 @@
     margin-left: 10px;
     position: relative;
     margin-bottom: 20px;
-    border-radius: 30px;
+    border-radius: 20px;;
 }
 
 .cm-msg-text-1 {
@@ -198,7 +198,7 @@
     float: right;
     position: relative;
     margin-bottom: 20px;
-    border-radius: 30px;
+    border-radius: 20px;;
     margin-right: 10px;
     background: #5A5EB9;
     color: white;
@@ -217,4 +217,11 @@
 .cm-msg-button {
     clear: both;
     margin-bottom: 70px;
+}
+a {
+    font-size: 20px;
+    color: black
+}
+h3{
+    margin-top: 10px;
 }

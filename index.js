@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const session = require('express-session');
 const helmet = require('helmet');
-
+const methodOverride = require("method-override");
 //////////////////////////////////////////
 const routes = require('./routes/index');
 const users = require('./routes/users');
@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride("_method"));
 //////////// Database Config //////////////
 mongoose.set('useCreateIndex', true);
 mongoose.connect('mongodb://localhost:27017/MovieApp', { useNewUrlParser: true });
