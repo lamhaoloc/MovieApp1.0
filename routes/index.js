@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Room = require('../models/Room')
-const middleware = require('../middleware/index')
-const User = require('../models/User')
+const Room = require('../models/Room');
+const Comment = require('../models/Comment');
+const User = require('../models/User');
+
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -16,19 +17,40 @@ router.get('/', (req, res) => {
     res.render('index', { title: 'Home' })
 })
 
-router.get('/home', isLoggedIn, (req, res) => {
-    Room.find({}, function (err, allRoom) {
-        let noMatch = null
-        if (err) { console.log(err) }
-        else {
-            if (allRoom.length < 1) {
-                noMatch = 'No Room found, let create one'
-                res.render('./Rooms/main', { rooms: allRoom, title: 'All Rooms', noMatch: noMatch })
-            } else {
-                res.render('./Rooms/main', { title: 'All Rooms', rooms: allRoom, noMatch: noMatch })
-            }
+router.get('/home', isLoggedIn, async function (req, res) {
+    const redis = require('redis');
+    const util = require('util')
+
+    const redisUrl = 'redis://127.0.0.1:6379';
+    const client = redis.createClient(redisUrl);
+    client.get = util.promisify(client.hget);
+    const hashKey = 'default'
+    const cachedRoom = await client.hget(hashKey, req.user.id)
+    let noMatch = null
+
+    if (cachedRoom) {
+        console.log('using redis')
+        if (cachedRoom.length < 1) {
+            noMatch = 'No Room found, let create one'
+            res.render('./Rooms/main', { rooms: JSON.parse(cachedRoom), title: 'All Rooms', noMatch: noMatch })
+        } else {
+            res.render('./Rooms/main', { title: 'All Rooms', rooms: JSON.parse(cachedRoom), noMatch: noMatch })
         }
-    })
+    } else {
+        Room.find({}, function (err, allRoom) {
+            console.log('using mongoDB')
+            if (err) { console.log(err) }
+            else {
+                if (allRoom.length < 1) {
+                    noMatch = 'No Room found, let create one'
+                    res.render('./Rooms/main', { rooms: allRoom, title: 'All Rooms', noMatch: noMatch })
+                } else {
+                    res.render('./Rooms/main', { title: 'All Rooms', rooms: allRoom, noMatch: noMatch })
+                }
+                client.hset(hashKey, req.user.id, JSON.stringify(allRoom))
+            }
+        })
+    }
 });
 
 router.route('/room/new')
@@ -63,15 +85,21 @@ router.route('/room/new/video/confirmed')
             res.redirect('back')
         }
     })
+
 router.route('/home/:id')
     .get(isLoggedIn, (req, res) => {
-        Room.findById(req.params.id, (err, foundRoom) => {
-            if (err) {
-                res.send('hihi')
-            } else {
-                res.render('./Rooms/showroom', { room: foundRoom })
-            }
-        })
+        Room.findById(req.params.id)
+            .populate('comments')
+            .populate('replies')
+            .exec((err, room) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    Comment.find({})
+                        .populate('replies')
+                    res.render('./Rooms/showroom', { room: room })
+                }
+            })
     })
 
 router.route('/home/:id/edit')
@@ -164,6 +192,81 @@ router.route('/home/:id/dislike')
             }
         })
     });
+
+// New commment on room
+router.route('/home/:id/comments/new')
+    .post(isLoggedIn, (req, res) => {
+        Room.findById(req.params.id, (err, foundRoom) => {
+            if (err) {
+                console.log(err)
+            } else {
+                Comment.create({ content: req.body.content }, (err, createdComment) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        createdComment.creator._id = req.user._id;
+                        createdComment.creator.firstName = req.user.firstName;
+                        createdComment.creator.lastName = req.user.lastName;
+                        createdComment.likes = 0;
+                        createdComment.save();
+                        foundRoom.comments.push(createdComment);
+                        foundRoom.save();
+                        res.redirect('back');
+                    }
+                })
+            }
+        })
+    })
+
+router.route('/home/:id/comments/reply')
+    .post(isLoggedIn, (req, res) => {
+        User.findById(req.user.id, (err, foundUser) => {
+            if (err) {
+                throw new Error(err)
+            } else {
+                Comment.findById(req.params.id, (err, foundComment) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        var newRelpy = { _id: foundUser._id, content: req.body.content, author: req.user.lastName };
+                        foundComment.replies.push(newRelpy);
+                        foundComment.save();
+                        res.redirect('back')
+                    }
+                })
+            }
+        })
+    })
+router.route('/home/:id/comments/like')
+    .get((req, res) => {
+        User.findById(req.user.id, (err, foundUser) => {
+            if (err) {
+                console.log(err)
+            } else {
+                Comment.findById(req.params.id, (err, foundComment) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        foundComment.likes += 1;
+                        foundComment.save();
+                        foundUser.liked_comments.push(foundComment);
+                        foundUser.save()
+                        res.redirect('back')
+                    }
+                })
+            }
+        })
+    })
+var counter = 0;
+router.get('/counter', function (req, res) {
+    res.cookie('counter', ++counter);
+
+    if (!req.cookies.counter) {
+        res.send('This is your first visit!');
+    } else {
+        res.send('This is visit number ' + req.cookies.counter + '!');
+    }
+});
 module.exports = router;
 
 

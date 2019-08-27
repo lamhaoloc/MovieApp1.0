@@ -11,6 +11,13 @@ const User = require('./models/User');
 const session = require('express-session');
 const helmet = require('helmet');
 const methodOverride = require("method-override");
+const utils = require('utils');
+// require('./middleware/cache');
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+
 //////////////////////////////////////////
 const routes = require('./routes/index');
 const users = require('./routes/users');
@@ -38,6 +45,8 @@ io.on('connection', function (socket) {
         io.emit('chat message', msg);
     });
 });
+/////////////////////////////////////////
+// Your web app's Firebase configuration
 /////////// Passport Config /////////////
 app.use(session({
     secret: "memem",
@@ -79,7 +88,6 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-
 //////// Sever Listener ///////////
 http.listen(process.env.PORT || 3000, () => {
     console.log('Connected')

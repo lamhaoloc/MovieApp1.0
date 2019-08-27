@@ -10,7 +10,15 @@ let CommentSchema = new mongoose.Schema({
         },
         firstName: String,
         lastName: String
-    }
+    },
+    replies: [
+        {
+            _id: mongoose.Schema.Types.ObjectId,
+            content: String,
+            author: String
+        }
+    ]
+
 });
 
 let Comment = mongoose.model("Comment", CommentSchema);

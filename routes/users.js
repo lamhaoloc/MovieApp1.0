@@ -27,7 +27,7 @@ router.route('/login')
                 return res.redirect('/login')
             }
             req.logIn(user, err => {
-                if (err) { return next(err) }
+                if (err) { console.log('login fail') }
                 let redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
                 delete req.session.redirectTo;
                 res.redirect(redirectTo)
@@ -61,4 +61,14 @@ router.route('/logout')
         req.logOut();
         res.redirect('/')
     });
+router.route('/profile/:id')
+    .get((req, res) => {
+        User.findById(req.params.id, (err, foundUser) => {
+            if (err) {
+                console.log(err)
+                res.redirect('back')
+            }
+            res.render('./profile', { user: foundUser })
+        })
+    })
 module.exports = router;

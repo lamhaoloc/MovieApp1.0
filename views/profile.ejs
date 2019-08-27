@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/c531526e8d.js"></script>
+    <title>Profile</title>
+</head>
+
+<body>
+    <% include ./Components/Navbar %>
+    <div class="container mt-5">
+        <div class="card" style="width:50rem;height: 500px;">
+            <img class="rounded mx-auto d-block" style="height: 400px; width: 600px;">
+            <div style="text-align: center" class="card-body">
+                <h5 id="username" class="card-title"><%=user.username%></h5>
+                <p class="card-text"><%=user.firstName%> <%=user.lastName%></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-storage.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBjdWANzKtLeEOWXspYexvgGLfdP7YXA-8",
+            authDomain: "movieapp-24aaa.firebaseapp.com",
+            databaseURL: "https://movieapp-24aaa.firebaseio.com",
+            projectId: "movieapp-24aaa",
+            storageBucket: "movieapp-24aaa.appspot.com",
+            messagingSenderId: "1067334554937",
+            appId: "1:1067334554937:web:a491d98c8857b7b1"
+        };
+        firebase.initializeApp(firebaseConfig);
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+        var imageDic = $('h5#username').text()
+        storageRef.child('image/' + imageDic).getDownloadURL().then(function (url) {
+            var test = url;
+            document.querySelector('img').src = test;
+        }).catch(function (error) {
+
+        });
+    </script>
+</body>
+
+</html>

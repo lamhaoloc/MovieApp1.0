@@ -1,5 +1,6 @@
 body{
-    background-image: url('../image/NoPath___Copy__5__A0_Rectangle_2_pattern.png')
+    background-image: url('../image/NoPath___Copy__5__A0_Rectangle_2_pattern.png');
+    background-size: cover;
 }
 div.content {
     margin-top: 100px;
@@ -8,4 +9,8 @@ div.content {
 }
 h2{
     text-align: center
+}
+a.nav-link {
+    font-size: 20px;
+    color: black
 }

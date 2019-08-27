@@ -725,3 +725,7 @@
     width: 1261px;
     height: 1px;
 }
+a.nav-link {
+    font-size: 20px;
+    color: black
+}

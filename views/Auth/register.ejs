@@ -28,11 +28,53 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="password" class="form-control mt-3" placeholder="Password"
                 required="" autofocus="">
-            <div class="mt-3">
+            <input type="file" value="upload" id="fileButton" class="form-control mt-3" required="" autofocus="">
+            <div class=" mt-3">
                 <button class="btn btn-primary " style="width: 100px" type="submit">Register</button>
             </div>
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
 
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.5/firebase-storage.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBjdWANzKtLeEOWXspYexvgGLfdP7YXA-8",
+            authDomain: "movieapp-24aaa.firebaseapp.com",
+            databaseURL: "https://movieapp-24aaa.firebaseio.com",
+            projectId: "movieapp-24aaa",
+            storageBucket: "movieapp-24aaa.appspot.com",
+            messagingSenderId: "1067334554937",
+            appId: "1:1067334554937:web:a491d98c8857b7b1"
+        };
+        firebase.initializeApp(firebaseConfig);
+        $('input#fileButton').on('change', (e) => {
+            var imageDic = $('input#inputUserName').val();
+            var file = e.target.files[0]
+            // storage ref
+            var storageRef = firebase.storage().ref('image/' + imageDic);
+            //upload file
+            var task = storageRef.put(file);
+            // update progress bar
+            task.on('state_changed', (snapshot) => {
+                console.log('lll')
+            },
+                (err) => {
+                    console.log(err)
+                },
+                () => {
+                    console.log('ok')
+                })
+        })
 
-    <% include ../Components/Footer %>
+    </script>

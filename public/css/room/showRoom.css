@@ -93,7 +93,7 @@
     position: relative;
     height: 47px;
     padding-top: 10px;
-    padding-right: 50px;
+    padding-right: 100px;
     padding-bottom: 10px;
     padding-left: 15px;
     border: none;
@@ -218,10 +218,19 @@
     clear: both;
     margin-bottom: 70px;
 }
-a {
+a{
     font-size: 20px;
     color: black
 }
 h3{
     margin-top: 10px;
 }
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }

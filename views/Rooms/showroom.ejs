@@ -10,15 +10,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/c531526e8d.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css/room/showRoom.css">
+    <link rel="stylesheet" type="text/css" href="../css/room/new.css">
     <title><%=room.title%></title>
 </head>
 
 <body>
     <% include ../Components/Navbar %>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div class="container">
-        <div class="row">
+    <div style="padding: 50px" class="container">
+        <div class="row main-block">
             <div class="col-md-8">
                 <div id="player" class="mt-5"></div>
                 <h3><%=room.title%></h3>
@@ -74,7 +76,91 @@
                 </div>
             </div>
         </div>
+        <div class="border mt-5" style="padding: 10px">
+            <p style="font-weight: bold">Comments</p>
+            <div>
+                <small><%=room.comments.length%> comments</small>
+                <hr>
+                <form method="POST" action="/home/<%=room.id%>/comments/new">
+                    <input type="text" name="content" id="fname" name="firstname" placeholder="Add a comments..">
+                </form>
+
+                <% room.comments.reverse().forEach(comment =>{ %>
+                <div class="<%=comment._id%>">
+                    <a href="/user/profile/<%=comment.creator._id%>">
+                        <p style="font-weight: bold; display: inline;"><%=comment.creator.lastName%></p>
+                    </a>
+                    <p style="display: inline"> : <%=comment.content%></p>
+                    <div class="ml-5">
+                        <a href="/home/<%=comment._id%>/comments/like"><small><%=comment.likes%> Like</small></a>
+                        <p style="display: inline">.</p>
+                        <a href="#"><small class="replyComment" id='<%=comment._id%>'>Reply</small></a>
+                    </div>
+                    <div class="<%=comment._id%> replyForm">
+                        <form class="ml-5" method="Post" action="/home/<%=comment._id%>/comments/reply">
+                            <label style="font-weight: bold; display: inline;"><%=currentUser.lastName%> :</label>
+                            <input id="hihi" name="content" type="text">
+                            <hr>
+                        </form>
+                    </div>
+                </div>
+                <% comment.replies.forEach(reply => { %>
+                <div class="ml-5">
+                    <a href="/user/profile/<%=reply._id%>">
+                        <p style="display: inline; font-weight: bold"><%=reply.author%> </p>
+                    </a>
+                    <p style="display: inline"> : <%=reply.content%></p>
+                </div>
+                <% })%>
+                <hr>
+                <% }) %>
+            </div>
+        </div>
     </div>
+    <footer id="myFooter" class="mt-5">
+        <div class="container" style="margin-bottom: -40px">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="logo"><a href="#"> LOGO </a></h2>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2016 Copyright Text </p>
+        </div>
+    </footer>
     <%/////////////////////////////////////%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -151,6 +237,11 @@
                 }
             });
         });
+        $('.replyForm').hide()
+        $('small.replyComment').on('click', (e) => {
+            $('div.' + e.target.id).show()
+        })
+
     </script>
 </body>
 
