@@ -13,14 +13,6 @@ const helmet = require('helmet');
 const methodOverride = require("method-override");
 const utils = require('utils');
 
-var hello = "hello";
-
-
-
-
-
-
-
 
 
 // require('./middleware/cache');
