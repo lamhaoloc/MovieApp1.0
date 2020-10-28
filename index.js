@@ -12,6 +12,17 @@ const session = require('express-session');
 const helmet = require('helmet');
 const methodOverride = require("method-override");
 const utils = require('utils');
+
+var hello = "hello";
+
+
+
+
+
+
+
+
+
 // require('./middleware/cache');
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
@@ -40,8 +51,8 @@ mongoose.connect('mongodb://localhost:27017/MovieApp', { useNewUrlParser: true }
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 /////////// SocketIo Config /////////////
-io.on('connection', function (socket) {
-    socket.on('chat message', function (msg) {
+io.on('connection', function(socket) {
+    socket.on('chat message', function(msg) {
         io.emit('chat message', msg);
     });
 });
@@ -67,13 +78,13 @@ app.use((req, res, next) => {
 app.use('/', routes);
 app.use('/user', users);
 ////////// Error Handlers //////////////
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
@@ -81,7 +92,7 @@ if (app.get('env') === 'development') {
         });
     });
 }
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
