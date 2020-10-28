@@ -14,6 +14,7 @@ const methodOverride = require("method-override");
 const utils = require('utils');
 
 var hello = "Hello";
+var thang = "Phan Quang Thang";
 
 // require('./middleware/cache');
 // Firebase App (the core Firebase SDK) is always required and
